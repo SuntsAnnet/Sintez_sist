@@ -1,5 +1,6 @@
 # Sintez_sist
 8 kyu
+
 1. What's the real floor?
 2. Simple Fun #261: Whose Move
 3. String cleaning
@@ -12,6 +13,7 @@
 10. Remove exclamation marks
 
 7 kyu
+
 11. Sum of Array Averages
 12. Number of People in the Bus
 13. Bumps in the Road
