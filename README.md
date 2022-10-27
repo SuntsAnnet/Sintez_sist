@@ -10,6 +10,7 @@
 8. Is he gonna survive?
 9. Grasshopper - Personalized Message
 10. Remove exclamation marks
+
 7 kyu
 11. Sum of Array Averages
 12. Number of People in the Bus
