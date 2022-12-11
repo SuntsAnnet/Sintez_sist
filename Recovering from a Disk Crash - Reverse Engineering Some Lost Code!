@@ -1,0 +1,126 @@
+///
+Recovering from a Disk Crash - Reverse Engineering Some Lost Code!
+https://www.codewars.com/kata/5589d3fa7e8b653faf0000cc/train/python
+///
+class InvoiceRow:
+    id_counter = 0  # class variable
+
+    def __init__(
+        self,
+        description: str = "",
+        unit_cost: float = 0.0,
+        quantity: int = 1,
+        taxable: bool = True,
+        id: int = 0,
+    ):
+        self.value = quantity * unit_cost
+        self.quantity = quantity
+        self.description = description
+        self.unit_cost = unit_cost
+        self.id = InvoiceRow.id_counter
+        self.taxable = taxable
+
+        InvoiceRow.id_counter += 1
+
+
+class Invoice:
+    def __init__(self, tax_rate: float = 0.2, rows: list[InvoiceRow] = []):
+        self.rows = []
+        self.tax_rate = tax_rate
+
+    def add_row(self, row: InvoiceRow):
+        """Appends a row to the list of invoice rows
+
+        Args:
+            row (InvoiceRow): the row of the invoice
+        """
+        self.rows.append(row)
+
+
+def is_credit(row: InvoiceRow):
+    return row.value > 0
+
+
+def is_debit(row: InvoiceRow):
+    return row.value < 0
+
+
+def is_taxable(row: InvoiceRow):
+    return row.taxable
+
+
+def printable_cost(unit_cost: float):
+    return f"{unit_cost:.2f}" if unit_cost != 0 else "Gratis"
+
+
+def printable_row(row: InvoiceRow, tax_rate: float):
+    return (
+        row.description,
+        f"{row.quantity:,.0f}",
+        f"{row.unit_cost:,.2f}",
+        f"{tax_rate if row.taxable else 0:.2f}",
+        f"{row.value:,.2f}",
+        f"{row.value*(1+(tax_rate if row.taxable else 0)):,.2f}",
+    )
+
+
+class InvoicePrinter():
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+
+    @staticmethod
+    def get_credit_rows(invoice):
+        return [row for row in invoice.rows if is_credit(row)]
+
+    @staticmethod
+    def get_debit_rows(invoice):
+        return [row for row in invoice.rows if is_debit(row)]
+
+    @staticmethod
+    def get_free_rows(invoice):
+        return [row for row in invoice.rows if not (is_debit(row) or is_credit(row))]
+
+    @staticmethod
+    def get_sub_total(invoice):
+        return sum([row.value for row in invoice.rows])
+
+    @staticmethod
+    def get_tax_total(invoice):
+        return (
+            sum([row.value for row in invoice.rows if is_taxable(row)])
+            * invoice.tax_rate
+        )
+
+    @staticmethod
+    def get_grand_total(invoice):
+        return InvoicePrinter.get_sub_total(invoice) + InvoicePrinter.get_tax_total(
+            invoice
+        )
+
+    @staticmethod
+    def generate_invoice(invoice: Invoice):
+        lines = 0
+        items = 0
+
+        tax_rate = round(invoice.tax_rate, 2)
+
+        for row in InvoicePrinter.get_credit_rows(invoice):
+            lines += 1
+            items += row.quantity
+            yield printable_row(row, tax_rate)
+
+        for row in InvoicePrinter.get_debit_rows(invoice):
+            lines += 1
+            items += row.quantity
+            yield printable_row(row, tax_rate)
+
+        for row in InvoicePrinter.get_free_rows(invoice):
+            lines += 1
+            items += row.quantity
+            yield printable_row(row, tax_rate)
+
+        yield ("Lines", str(lines))
+        yield ("Items", str(items))
+        yield ("Sub Total", "{:.2f}".format(InvoicePrinter.get_sub_total(invoice)))
+        yield ("Tax", "{:.2f}".format(InvoicePrinter.get_tax_total(invoice)))
+        yield ("Total", "{:.2f}".format(InvoicePrinter.get_grand_total(invoice)))
