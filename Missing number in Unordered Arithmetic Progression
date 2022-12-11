@@ -1,0 +1,8 @@
+///
+Missing number in Unordered Arithmetic Progression
+https://www.codewars.com/kata/568fca718404ad457c000033/train/python
+///
+def find(seq):
+    s = list(sorted(seq))
+    a, b, n = s[0], s[1], len(s)+1
+    return n/2*(2*a + (n-1)*(b-a)) - sum(seq)
