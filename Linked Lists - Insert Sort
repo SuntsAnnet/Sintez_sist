@@ -1,0 +1,15 @@
+///
+Linked Lists - Insert Sort
+https://www.codewars.com/kata/55d0c7ee7c0d30a12b000045/train/python
+///
+class Node(object):
+    def __init__(self, data, next=None):
+        self.data = data
+        self.next = next
+    
+def insert_sort(head):
+    n, r = head, None
+    while n:
+        r = sorted_insert(r, n.data)
+        n = n.next
+    return r
