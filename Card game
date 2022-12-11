@@ -1,0 +1,17 @@
+///
+Card game
+https://www.codewars.com/kata/5a3141fe55519e04d90009d8/train/python
+///
+RANK_VAL = {rank: value for value, rank in enumerate('2 3 4 5 6 7 8 9 10 J Q K A'.split())}
+
+def card_game(a: str, b: str, trump: str) -> str:
+    if a == b:          return 'Someone cheats.'
+    if a == 'joker':    return 'The first card won.'
+    if b == 'joker':    return 'The second card won.'
+    suit_a, suit_b = a[-1], b[-1]
+    if suit_a == suit_b:
+        rank_a, rank_b = a[:-1], b[:-1]
+        return 'The %s card won.' % ('first' if RANK_VAL[rank_a] > RANK_VAL[rank_b] else 'second')
+    if suit_a == trump: return 'The first card won.'
+    if suit_b == trump: return 'The second card won.'
+    return 'Let us play again.'
