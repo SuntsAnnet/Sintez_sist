@@ -1,0 +1,19 @@
+///
+The Dots and Parentheses
+https://www.codewars.com/kata/5fe26f4fc09ce8002224e95d/train/python
+///
+from gmpy2 import next_prime
+
+def puzzle(n):
+    if n==0:
+        return "."
+    res = []
+    p = 2
+    while n>1:
+        count = 0
+        while n%p==0:
+            n //= p
+            count += 1
+        res.append(puzzle(count))
+        p = int(next_prime(p))
+    return "(" + "".join(res) + ")"
