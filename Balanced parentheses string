@@ -1,0 +1,22 @@
+///
+Balanced parentheses string
+https://www.codewars.com/kata/60790e04cc9178003077db43/train/python
+///
+from math import comb
+
+def balanced_parens(n, k):
+    if k < 0: return None
+    res, c = '', 0
+    for i in range(2 * n):
+        t = comb(2 * n - c - 1, n) * (c + 2) // (n + 1)
+        if k < t:
+            res += '('
+            c += 1
+        elif c:
+            res += ')'
+            k -= t
+            c -= 1
+            n -= 1
+        else:
+            return None
+    return res
