@@ -1,0 +1,9 @@
+///
+Sum of a Sequence [Hard-Core Version]
+///
+
+def sequence_sum(begin_number, end_number, step):
+    n = (end_number - begin_number) // step
+    return 0 if n < 0 else (n+1)*(n*step+begin_number+begin_number)//2
+
+
