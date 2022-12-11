@@ -1,0 +1,31 @@
+///
+Give The Biggest Prime Factor And The Biggest Divisor Of A Number
+https://www.codewars.com/kata/5646ac68901dc5c31a000022/solutions/python
+///
+def prime_factors(n):
+    factors = []
+    while n % 2 == 0:
+        factors.append(2)
+        n //= 2
+
+    k = 3
+    while k*k <= n:
+        while n % k == 0:
+            factors.append(k)
+            n //= k
+        k += 2
+    if n > 1:
+        factors.append(n)
+    return factors
+
+
+def big_primefac_div(n):
+    if not float(n).is_integer():
+        # raise ValueError("The number has a decimal part. No Results")
+        return "The number has a decimal part. No Results"
+
+    n = abs(round(n))
+    factors = prime_factors(n)
+    return [factors[-1], n//factors[0]] if len(factors) > 1 else []
+
+
