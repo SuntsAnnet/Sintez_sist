@@ -1,0 +1,17 @@
+///
+Domino Tiling - 3 x N Board
+https://www.codewars.com/kata/5993dcfca6a7632807000017/train/python
+///
+def three_by_n(n):
+    l,d,M = [0,2,2],[0,2,3],12345787
+    for i in range(3,n+1):
+        a = (3 * d[i-2]) + l[i-2]
+        b = (2 * d[i-2]) + l[i-2]
+        if i&1:
+            a += (2 * d[i-1]) + (2 * l[i-1])
+            b += (2 * d[i-1]) + (1 * l[i-1])
+        a %= M
+        b %= M
+        l.append(b)
+        d.append(a)
+    return d[n]
