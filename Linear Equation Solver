@@ -1,0 +1,52 @@
+///
+Linear Equation Solver
+https://www.codewars.com/kata/56d6d927c9ae3f115b0008dd/train/python
+///
+def solve(*equations):
+    E = len(equations)
+    c = [{} for i in range(E)]
+    sides = [equations[i].replace("-","+-").split("=") for i in range(E)]
+    ct = [[sides[i][0].split("+"),sides[i][1].split("+")] for i in range(E)]
+    
+    def process(p,i,sign):
+        if not p:
+            return
+        alfa = [chr(n) for n in range(ord('a'),ord('z')+1)]
+        name = "".join(list(c for c in p if c in alfa))
+        coeff = p[:len(p)-len(name)]
+        coeff = 1 if coeff=="" else -1 if coeff=="-" else int(coeff)
+        c[i][name] = (c[i][name] if name in c[i] else 0) + (coeff if sign else -coeff)
+    
+    for i in range(E):
+        for p in ct[i][0]:
+            process(p,i,True)
+        for p in ct[i][1]:
+            process(p,i,False)
+    vars = sorted(set(v for i in range(E) for v in c[i].keys() if v!=""))
+    if len(vars) > E:
+        return None
+    for i in range(E):
+        for v in vars:
+            c[i][v] = c[i][v] if v in c[i] else 0
+        c[i][""] = c[i][""] if "" in c[i] else 0
+    for i,v in enumerate(vars):
+        act = {k for k in range(i,E) if c[k][v]!= 0}
+        if not act:
+            return None
+        while len(act)>1:
+            k = min(act,key=lambda k:abs(c[k][v]))
+            for l in act-{k}:
+                m = (1 if c[l][v]*c[k][v]>0 else -1)*abs(c[l][v])//abs(c[k][v])
+                for w in vars+[""]:
+                    c[l][w] -= m*c[k][w]
+                if c[l][v] == 0:
+                    act.remove(l)
+        k = act.pop()
+        c[i],c[k] = c[k],c[i]
+    if [i for i in range(len(vars),E) if c[i][""]!=0]:
+        return None
+    sol = {}
+    E = len(vars)
+    for i in reversed(range(0,E)):
+        sol[vars[i]] = -(c[i][""]+sum(c[i][vars[j]]*sol[vars[j]] for j in range(i+1,E)))//c[i][vars[i]]
+    return sol
