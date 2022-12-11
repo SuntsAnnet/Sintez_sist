@@ -1,0 +1,16 @@
+///
+Counting inner calls in an unknown function.
+https://www.codewars.com/kata/53efc28911c36ff01e00012c/train/python
+///
+import sys
+
+def count_calls(func, *args, **kwargs):
+
+    def handler(_,line,k):
+        handler.count += int(line=='call')
+        
+    handler.__dict__['count'] = 0
+    sys.settrace(handler)
+    
+    rv = func(*args, **kwargs)
+    return handler.count - 1, rv
