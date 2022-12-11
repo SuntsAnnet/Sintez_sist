@@ -1,0 +1,17 @@
+///
+Easy Cyclist's Training
+https://www.codewars.com/kata/5879f95892074d769f000272/train/python
+///
+from math import sin, atan
+
+def temps(v0, slope, d_tot):
+    t, d, v, w, s = 0, 0, v0, 225, -2118.96 * sin(atan(slope/100))
+    while d <= d_tot:
+        t += 1/60
+        w -= 1/120
+        g = s - (v/4)**2
+        if w > 0 < v: g += 9.72 * w / v
+        if abs(g) > 1e-5: v += g * 1/60
+        d += v / 3600
+        if v <= 3 + 1e-2: return -1
+    return round(t)
