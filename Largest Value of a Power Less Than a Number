@@ -1,0 +1,22 @@
+///
+Largest Value of a Power Less Than a Number
+https://www.codewars.com/kata/5e860c16c7826f002dc60ebb/train/python
+///
+import math
+def largest_power(n):
+    if n==1:return (0,-1)
+    if n<=4:
+        return(1,-1)
+    k1=0
+    g=0
+    j=2
+    for i in range(2,int(math.sqrt(n))+2):
+        j=2
+        while i**j<n:
+            if k1<i**j:
+                g=1
+                k1=i**j
+            elif k1==i**j:
+                g+=1
+            j+=1
+    return(k1,g)
