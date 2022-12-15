@@ -58,3 +58,8 @@
 43. Counting inner calls in an unknown function.
 44. Linear Equation Solver
 45. Bridge Puzzle
+46. Square and Cube of a Number Become Prime When Reversed
+47. Solving a puzzle by matching four corners
+48. Big Generalized Fibonacci numbers
+49. The Greatest Warrior
+50. Space Invaders Underdog
