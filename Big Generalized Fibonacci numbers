@@ -1,0 +1,14 @@
+'''
+https://www.codewars.com/kata/5d7bb3eda58b36000fcc0bbb/solutions/python
+'''
+def generalized_fibonacchi(a, b, n):
+    m = [[1 if i == j else 0 for j in range(1, len(a))] + [b[-1-i]] for i in range(len(a))]
+    return dot([a], mpow(m, 1+n-len(a)))[0][-1]
+def dot(a, b):
+    return [[sum(a[i][k] * b[k][j] for k in range(len(b))) for j in range(len(b[0]))] for i in range(len(a))]
+def mpow(a, b):
+    res = a 
+    for i in bin(b)[3:]:
+        res = dot(res, res)
+        if i == '1': res = dot(res, a)
+    return res
